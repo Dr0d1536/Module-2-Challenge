@@ -1,0 +1,132 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2706
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Sub MultiYearStockCode()\
+\
+For Each ws In Worksheets\
+\
+Dim WorksheetName As String\
+Dim TickerName As String\
+Dim TickerVolume As Double\
+Dim TickerYRChange As Double\
+Dim LastNumberRow As Double\
+Dim TickerResults As Integer\
+Dim Index As Double\
+Dim PercentageChange As Double\
+Dim GreatestIncrease As Double\
+Dim GreatestDecrease As Double\
+Dim GreatestTotalVolume As Double\
+Dim LastNumberRowI As Double\
+Dim r As Double\
+Dim i As Double\
+\
+\
+Index = 2\
+TickerVolume = 0\
+TickerResults = 2\
+LastNumberRow = ws.Cells(Rows.Count, 1).End(xlUp).Row\
+WorksheetName = ws.Name\
+ws.Range("I:Q").HorizontalAlignment = xlCenter\
+ws.Range("I1:L1").ColumnWidth = 20\
+ws.Range("O1:Q1").ColumnWidth = 20\
+ws.Range("I1").Value = "Ticker"\
+ws.Range("J1").Value = "Yearly Change"\
+ws.Range("K1").Value = "Percent Change"\
+ws.Range("L1").Value = "Total Stock Volume"\
+ws.Range("O2").Value = "Greatest % Increase"\
+ws.Range("O3").Value = "Greatest % Decrease"\
+ws.Range("O4").Value = "Greatest Total Volume"\
+ws.Range("P1").Value = "Ticker"\
+ws.Range("Q1").Value = "Value"\
+\
+For r = 2 To LastNumberRow\
+\
+If ws.Cells(r + 1, 1).Value <> ws.Cells(r, 1).Value Then\
+\
+\
+TickerName = ws.Cells(r, 1).Value\
+TickerVolume = TickerVolume + ws.Cells(r, 7).Value\
+TickerYRChange = ws.Cells(r, 6).Value - ws.Cells(Index, 3).Value\
+\
+\
+\
+If ws.Cells(Index, 3).Value <> 0 Then\
+PercentageChange = TickerYRChange / ws.Cells(Index, 3).Value\
+ws.Range("K" & TickerResults).Value = Format(PercentageChange, "Percent")\
+Else\
+ws.Range("K" & TickerResults).Value = Format(0, "Percent")\
+End If\
+\
+ws.Range("I" & TickerResults).Value = TickerName\
+ws.Range("J" & TickerResults).Value = TickerYRChange\
+ws.Range("L" & TickerResults).Value = TickerVolume\
+\
+If ws.Cells(TickerResults, 10).Value < 0 Then\
+ws.Cells(TickerResults, 10).Interior.ColorIndex = 3\
+End If\
+If ws.Cells(TickerResults, 10).Value > 0 Then\
+ws.Cells(TickerResults, 10).Interior.ColorIndex = 4\
+End If\
+\
+TickerResults = TickerResults + 1\
+TickerVolume = 0\
+TickerYRChange = 0\
+\
+Else\
+\
+TickerVolume = TickerVolume + ws.Cells(r, 7).Value\
+\
+End If\
+Next r\
+LastNumberRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row\
+\
+GreatestIncrease = ws.Cells(2, 11).Value\
+GreatestDecrease = ws.Cells(2, 11).Value\
+GreatestTotalVolume = ws.Cells(2, 12).Value\
+Dim BounsResults As Integer\
+BounsResults = 2\
+\
+For i = 2 To LastNumberRowI\
+\
+If ws.Cells(i, 11).Value > GreatestIncrease Then\
+GreatestIncrease = ws.Cells(i, 11).Value\
+ws.Cells(3, 16).Value = ws.Cells(i, 9).Value\
+Else\
+                \
+GreatestIncrease = GreatestIncrease\
+                \
+End If\
+                \
+If ws.Cells(i, 11).Value < GreatestDecrease Then\
+GreatestDecrease = ws.Cells(i, 11).Value\
+ws.Cells(2, 16).Value = ws.Cells(i, 9).Value\
+Else\
+                \
+GreatestDecrease = GreatestDecrease\
+                \
+End If\
+\
+If ws.Cells(i, 12).Value > GreatestTotalVolume Then\
+GreatestTotalVolume = ws.Cells(i, 12).Value\
+ws.Cells(4, 16).Value = ws.Cells(i, 9).Value\
+Else\
+                \
+GreatestTotalVolume = GreatestTotalVolume\
+                \
+End If\
+\
+ws.Cells(2, 17).Value = Format(GreatestIncrease, "percent")\
+ws.Cells(3, 17).Value = Format(GreatestDecrease, "percent")\
+ws.Cells(4, 17).Value = Format(GreatestTotalVolume, "scientific")\
+\
+\
+Next i\
+Next ws\
+End Sub\
+\
+\
+}
