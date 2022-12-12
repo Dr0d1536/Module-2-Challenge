@@ -2,33 +2,35 @@
 \cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\margl1440\margr1440\vieww9120\viewh18780\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\b\fs24 \cf0 Sub MultiYearStockCode()\
+\f0\b\fs24 \cf0 Sub ABCRun()\
 \
 For Each ws In Worksheets\
-\
+\'91Test For GitHub\
 Dim WorksheetName As String\
 Dim TickerName As String\
 Dim TickerVolume As Double\
 Dim TickerYRChange As Double\
-Dim LastNumberRow As Double\
+Dim LastNumberRow As Integer\
 Dim TickerResults As Integer\
 Dim Index As Double\
 Dim PercentageChange As Double\
 Dim GreatestIncrease As Double\
 Dim GreatestDecrease As Double\
 Dim GreatestTotalVolume As Double\
-Dim LastNumberRowI As Double\
+Dim LastNumberRowI As Integer\
 Dim r As Double\
 Dim i As Double\
+Dim FirstOpen As Double\
 \
 \
 Index = 2\
+FirstOpen = ws.Cells(2, 3).Value\
 TickerVolume = 0\
 TickerResults = 2\
-LastNumberRow = ws.Cells(Rows.Count, 1).End(xlUp).Row\
+'LastNumberRow = ws.Cells(Rows.Count, 1).End(xlUp).Row\
 WorksheetName = ws.Name\
 ws.Range("I:Q").HorizontalAlignment = xlCenter\
 ws.Range("I1:L1").ColumnWidth = 20\
@@ -50,7 +52,8 @@ If ws.Cells(r + 1, 1).Value <> ws.Cells(r, 1).Value Then\
 \
 TickerName = ws.Cells(r, 1).Value\
 TickerVolume = TickerVolume + ws.Cells(r, 7).Value\
-TickerYRChange = ws.Cells(r, 6).Value - ws.Cells(Index, 3).Value\
+TickerYRChange = ws.Cells(r, 6).Value - FirstOpen\
+FirstOpen = ws.Cells(r + 1, 3).Value\
 \
 \
 \
@@ -81,7 +84,11 @@ Else\
 TickerVolume = TickerVolume + ws.Cells(r, 7).Value\
 \
 End If\
+\
+\
 Next r\
+\
+\
 LastNumberRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row\
 \
 GreatestIncrease = ws.Cells(2, 11).Value\
@@ -119,9 +126,9 @@ GreatestTotalVolume = GreatestTotalVolume\
                 \
 End If\
 \
-ws.Cells(2, 17).Value = Format(GreatestIncrease, "percent")\
-ws.Cells(3, 17).Value = Format(GreatestDecrease, "percent")\
-ws.Cells(4, 17).Value = Format(GreatestTotalVolume, "scientific")\
+ws.Cells(2, 17).Value = Format(GreatestIncrease, "Percent")\
+ws.Cells(3, 17).Value = Format(GreatestDecrease, "Percent")\
+ws.Cells(4, 17).Value = GreatestTotalVolume\
 \
 \
 Next i\
